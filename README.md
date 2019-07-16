@@ -40,8 +40,8 @@ Prueba técnica de Backend
     <td>Si</td>
     <td>Configuración del entorno de trabajo</td>
     <td>1</td>
-    <td>NA</td>
-    <td>En ejecución</td>
+    <td>1</td>
+    <td>Completada</td>
   </tr>
   <tr>
     <td>5</td>
