@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include
 
 urlpatterns = [
+	path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
 ]
+admin.site.site_header = 'Mi sitio de comercio'
+admin.site.index_title = 'Administración del sitio'
+admin.site.site_title = 'Administración del sitio'
