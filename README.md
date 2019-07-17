@@ -48,8 +48,8 @@ Prueba técnica de Backend
     <td>Si</td>
     <td>Definición de modelos de persistencia de datos y configuración del sitio de administración de la miniapp</td>
     <td>1</td>
-    <td>NA</td>
-    <td>Por ejecutar</td>
+    <td>2</td>
+    <td>Completada</td>
   </tr>
     <tr>
     <td>6</td>
