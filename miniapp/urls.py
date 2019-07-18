@@ -16,10 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
+from rest_framework import routers
+
+# APIS
+admin.autodiscover()
+router = routers.DefaultRouter()
+
+from operation.views import OperationDataViewSet, DetailOperationDataViewSet
+router.register(r'operation', OperationDataViewSet)
+router.register(r'detailoperation', DetailOperationDataViewSet)
 
 urlpatterns = [
 	path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
+	path('api/', include(router.urls)),
 ]
 admin.site.site_header = 'Mi sitio de comercio'
 admin.site.index_title = 'Administración del sitio'

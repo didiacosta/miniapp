@@ -1,6 +1,5 @@
 from django.db import models
 from simple_history.models import HistoricalRecords
-import uuid
 import os
 # Create your models here.
 
@@ -8,13 +7,13 @@ from product.models import Product
 from usuario.models import User
 
 class Operation(models.Model):
-	date_operation = models.DateTimeField(auto_now_add=True)
+	date_operation = models.DateTimeField(null=True)
 	user = models.ForeignKey(User,
 		related_name='fk_operation_user',
 		on_delete=models.PROTECT)
 	idempotency_token = models.CharField(max_length=200, null=True, blank=True)
 	token = models.CharField(max_length=200, null=True, blank=True)
-	status = models.CharField(max_length=200, default='created')
+	status = models.CharField(max_length=200, default='provisioned')
 	user_ip_address = models.CharField(max_length=200,null=True, blank=True)
 	history = HistoricalRecords()
 
@@ -27,7 +26,7 @@ class Operation(models.Model):
 		subtotal = 0
 		details = DetailOperation.objects.filter(
 			operation=self).values('product__price','quantity')
-		for datail in details:
+		for detail in details:
 			subtotal = subtotal + (detail['product__price'] * detail['quantity'])
 		return subtotal
 	
@@ -40,10 +39,10 @@ class Operation(models.Model):
 		return self.user.email + ' - ' + \
 		self.date_operation.strftime('%Y-%m-%d %H:%M')
 
-	def save(self, *args, **kwargs):
-		#self.user_ip_address = self.requests.environ["REMOTE_ADDR"]
-		self.idempotency_token=uuid.uuid1()
-		super(Operation, self).save(*args, **kwargs)
+	# def save(self, *args, **kwargs):
+	# 	self.date_operation = datetime.datetime.now()
+	# 	self.idempotency_token=uuid.uuid1()
+	# 	super(Operation, self).save(*args, **kwargs)
 
 
 class DetailOperation(models.Model):
@@ -55,6 +54,9 @@ class DetailOperation(models.Model):
 		on_delete=models.PROTECT)
 	quantity = models.IntegerField()
 
+	class Meta:
+		unique_together = (("operation","product"),)
+
 	@property
 	def _history_user(self):
 		return self.changed_by	
@@ -64,6 +66,6 @@ class DetailOperation(models.Model):
 		self.changed_by = value
 	
 	def __str__(self):
-		return self.date_operation.strftime('%Y-%m-%d %H:%M') + ' - ' + \
+		return self.operation.date_operation.strftime('%Y-%m-%d %H:%M') + ' - ' + \
 		self.product.name + ' - (' + str(self.quantity) + ')'
 

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cloudinary',
+    'rest_framework',
     'usuario',
     'type',
     'product',
@@ -122,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-co'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
 
@@ -145,3 +146,33 @@ cloudinary.config(
   api_secret = "qGQrPwT0geURjbSe9wKMw2kKNZU" 
 )
 URLCLOUDINARY='res.cloudinary.com/dvlh6khwu/'
+
+REST_FRAMEWORK = {
+
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    # ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     #  'rest_framework.permissions.IsAuthenticated',
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    # ),    
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20
+}
+
+# Credenciales api Tpaga
+USER_TPAGA = "miniapp-gato1"
+CLAVE_TPAGA = "miniappma-123"
+
+#estados solicitud de pago
+CREATED = 'created'
+PAID = 'paid'
+FAILED = 'failed'
+DELIVERED = 'delivered'
+REVERT = 'revert'
+
+# Ip servidor
+IP_SERVER = "https://localhost:8000/"

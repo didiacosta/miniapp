@@ -64,24 +64,24 @@ Prueba técnica de Backend
     <td>Si</td>
     <td>Desarrollar el servicio Restfull de compra con la billetera</td>
     <td>2</td>
-    <td>NA</td>
-    <td>Por ejecutar</td>
+    <td>3</td>
+    <td>Completada</td>
   </tr>
   <tr>
     <td>8</td>
     <td>Si</td>
     <td>Desarrollar el servicio Restfull para verificar el pago</td>
     <td>3</td>
-    <td>NA</td>
-    <td>Por ejecutar</td>
+    <td>2</td>
+    <td>Completado</td>
   </tr>
   <tr>
     <td>9</td>
     <td>Si</td>
     <td>Desarrollar el servicio Restfull para listar operaciones y el estado de las operaciones</td>
     <td>1</td>
-    <td>NA</td>
-    <td>Por ejecutar</td>
+    <td>1</td>
+    <td>Completado</td>
   </tr>
   <tr>
     <td>10</td>
@@ -165,4 +165,28 @@ Prueba técnica de Backend
   <li>frontend: HTML + CSS3 + knockout</li>
   <li>Control de versiones: Github</li>
   <li>Despliegue: EC2 de AWS</li>
+</ul>
+
+<h3>Servicios Resfull</h3>
+<ul>
+  <li>
+    </b>servicio para creacion de solicitud de pago:</b>
+    http://localhost:8000/api/operation/create-payment-request/
+    Se espera recibir por POST el parametro data que envia un array de json que contenga
+    los id de los productos a comprar y su respectiva cantidad
+    [{id:xx, quantity: yy}, {id:xx1, quantity: yy1}, ....]
+    igualmente se espera el parametro user id del usuario que esta realizando la peticion
+  </li>
+  <li>
+  </b>servicio para verificar el estado de la solicitud de pago:</b>
+  http://localhost:8000/api/operation/get-status-payment-request
+  se envia el parametro token que corresponde al token retornado por el 
+  servicio de creacion de la solicitud de pago.
+  </li>
+  <li>
+    </b>servicio para listar solicitudes de pago:</b>
+    http://localhost:8000/api/operation/
+     es posible realizar la consulta utilizando los parametros(pueden combinarse) 
+     idempotency_token, token, status, user
+  </li>
 </ul>
