@@ -194,7 +194,13 @@ Prueba técnica de Backend
 <h3>Instrucciones de instalacion</h3>
 <ul>
   <li>
-    crear el ambiente virtual usando python 3.5 o superior: comando virtualenv -p [ruta al python.exe] [nombre del entorni virtual]
+    instalar Python con las librerias auxiliares: pip3, easy_install, entre otras.
+  </li>
+  <li>
+    instalar virtualenv con el comando: easy_install virtualenv
+  </li>
+  <li>
+    crear el ambiente virtual usando python 3.5.2 o superior: comando virtualenv -p [ruta al python.exe] [nombre del entorni virtual]
   </li>
   <li>
     activar el entorno virtual: ingrese a la carpeta del entorno virtual creado y utilice el comando: activate
@@ -227,3 +233,5 @@ a la API de Tpaga, dejarlos en repositorios publicos expone las
 credenciales de autenticacion. Si se realizan repositorios privados, 
 es necesario especificar los usuarios con los cuales se debe compartirlo.
  </p>
+ 
+
