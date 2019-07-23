@@ -25,7 +25,7 @@ from django.views.static import serve
 admin.autodiscover()
 router = routers.DefaultRouter()
 
-from operation.views import OperationDataViewSet, DetailOperationDataViewSet
+from operation.views import OperationDataViewSet, DetailOperationDataViewSet, getOrder
 router.register(r'operation', OperationDataViewSet)
 router.register(r'detailoperation', DetailOperationDataViewSet)
 
@@ -36,7 +36,8 @@ urlpatterns = [
 	path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
 	path('api/', include(router.urls)),
-    path('usuario/',include('usuario.urls')),
+    path('usuario/', include('usuario.urls')),
+    path('order/<int:id>/', getOrder, name='operation.getOrder'),
 ]
 
 admin.site.site_header = 'Mi sitio de comercio'

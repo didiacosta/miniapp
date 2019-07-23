@@ -88,8 +88,8 @@ Prueba técnica de Backend
     <td>Si</td>
     <td>Maquetar el frontend de la miniapp.</td>
     <td>1</td>
-    <td>NA</td>
-    <td>Por ejecutar</td>
+    <td>2</td>
+    <td>Completado</td>
   </tr> 
   <tr>
     <td>11</td>
@@ -105,8 +105,8 @@ Prueba técnica de Backend
     <td>Si</td>
     <td>Desarrollar frontend para registrar el producto y la cantidad a comprar, consumir el servicio Restfull de compra con la billetera y mostrar al usuario los resultados de la compra.</td>
     <td>3</td>
-    <td>NA</td>
-    <td>Por ejecutar</td>
+    <td>3</td>
+    <td>Completado</td>
   </tr>
   <tr>
     <td>13</td>
@@ -138,7 +138,7 @@ Prueba técnica de Backend
     <td>Instrucciones para pruebas.</td>
     <td>1</td>
     <td>NA</td>
-    <td>Por ejecutar</td>
+    <td>Ejecutado</td>
   </tr>
    <tr>
     <td>18</td>
@@ -146,7 +146,7 @@ Prueba técnica de Backend
     <td>Recomendaciones.</td>
     <td>1</td>
     <td>NA</td>
-    <td>Por ejecutar</td>
+    <td>Ejecutado</td>
   </tr>
   <tr>
     <td colspan="3">Total</td>

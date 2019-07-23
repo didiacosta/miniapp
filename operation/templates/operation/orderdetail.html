@@ -1,0 +1,27 @@
+{% extends 'page.html' %}
+{% load staticfiles %}
+{% block title %}Detalle de la orden{% endblock title%}
+
+{% block centerContent %}
+	<h2>Detalle de la orden No. {{ id }}</h2>
+	<input type="hidden" id="order_id" name="order_id" value="{{id}}"/>
+	<div data-bind="visible:(list()!=null)">
+		<h3>Estado de la operacion</h3> 
+		<input type="text" name="status" id="status" disabled/>
+		<br/>
+		<h3>Productos en la orden</h3>
+		<div data-bind="foreach:{data:list, as:'item'}">
+			<div data-bind="text:item.name"></div>
+		</div>
+	</div>
+
+{% endblock centerContent %}
+
+{%block imports_js %}
+<script src="{% static 'js/ViewModels/operation/operation.js' %}"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		operation.getData($("#order_id").val());
+	});
+</script>
+{% endblock imports_js %}

@@ -151,9 +151,10 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 					
 				data = {
 						"cost": str(int(operation.subtotal)),
-						"purchase_details_url": settings.IP_SERVER + 'admin',
-						"voucher_url": settings.IP_SERVER +  \
-						'admin/operation/operation/' + str(operation.id) + '/change/',
+						"purchase_details_url": settings.IP_SERVER +\
+						'order/' + str(operation.id),
+						"voucher_url": settings.IP_SERVER +\
+						'order/' + str(operation.id),
 						"idempotency_token": str(operation.idempotency_token),
 						"order_id": str(operation.id),
 						"terminal_id": "sede virtual principal",
@@ -189,11 +190,7 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 			response = Response(reply) 
 			return response
 
-		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(e,exc_type, fname, exc_tb.tb_lineno)
-			
+		except Exception as e:			
 			transaction.savepoint_rollback(sid)
 			reply = Structure.error500()				
 			return Response(reply, status=status.HTTP_400_BAD_REQUEST)	
@@ -203,7 +200,9 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 	def getPaymentRequest(self, request,*args,**kwargs):
 		try:
 			token = request.GET.get('token',None)
-			if token:
+			id = request.GET.get('id',None)
+
+			if token or id:
 				c = settings.USER_TPAGA + ':' + settings.CLAVE_TPAGA
 				credentials = base64.b64encode(c.encode())
 				headers = {
@@ -211,10 +210,22 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 					'Cache-Control': "no-cache",
 					'Content-Type': "application/json"
 					}
-				result = requests.get('https://stag.wallet.tpaga.co/merchants/api/v1/payment_requests/' + \
-					token + '/info',headers = headers)
-				reply = Structure.success('Resultado satistactorio',
-				result.json())
+				if token == None:
+					operation = Operation.objects.get(id=id)
+					token = operation.token
+				
+				if token:
+					result = requests.get('https://stag.wallet.tpaga.co/merchants/api/v1/payment_requests/' + \
+						token + '/info',headers = headers)
+					reply = Structure.success('Resultado satistactorio',
+					result.json())
+
+					if operation:
+						operation.status = result.json()['status']
+						operation.save()
+				else:
+					reply = Structure.warning('No se encontro en la peticion el parametro token',None)
+
 			else:
 				reply = Structure.warning('No se encontro en la peticion el parametro token',None)				
 
@@ -222,6 +233,10 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 			return response
 
 		except Exception as e:
+			exc_type, exc_obj, exc_tb = sys.exc_info()
+			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+			print(e,exc_type, fname, exc_tb.tb_lineno)
+
 			reply = Structure.error500()				
 			return Response(reply, status=status.HTTP_400_BAD_REQUEST)				
 
@@ -272,3 +287,7 @@ class DetailOperationDataViewSet(viewsets.ModelViewSet):
 		except Exception as e:
 			reply = Structure.error500()
 			return Response(reply, status=status.HTTP_400_BAD_REQUEST)
+
+def getOrder(request,id):
+	return render(request,'operation/orderdetail.html',{'id':id})
+
