@@ -6,6 +6,7 @@ import cloudinary.uploader
 import cloudinary.api
 
 from cloudinary.models import CloudinaryField
+from django.conf import settings
 
 from type.models import Type
 # Create your models here.
@@ -25,6 +26,10 @@ class Product(models.Model):
 		return format_html('<img src="{}" width="100" height="100"/>'.format(self.image.url))
 
 	image_url.allow_tags = True
+
+	@property
+	def image_url_absolute(self):
+		return self.image.url	
 
 	@property
 	def _history_user(self):

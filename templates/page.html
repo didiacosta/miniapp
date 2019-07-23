@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>{% block title %}{% endblock title %}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		{% load staticfiles %}
+		{%block imports_css %}{% endblock imports_css %}
+		<link rel="stylesheet" type="text/css" href="{% static 'assets/CSS/main.css' %}">
+		<script src="{% static 'js/jquery.min.js' %}"></script>		
+		<script type="text/javascript" src='{% static "js/callback/ajax-callback.js" %}'></script>
+		<script type="text/javascript" src='{% static "js/jqueryConfirm/jquery-confirm.js" %}'></script>
+		<script type="text/javascript" src='{% static "js/knockout/knockout-3.4.0.js" %}'></script>
+		<script type="text/javascript" src='{% static "js/knockout/knockout.mapping-latest.js" %}'></script>
+		<script type="text/javascript" src='{% static "js/knockout/knockout.validation.js" %}'></script>
+		<script type="text/javascript" src='{% static "js/knockout/knockstrap.min.js" %}'></script>
+		<script type="text/javascript" src='{% static "js/knockout/controles.js" %}'></script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+
+							<!-- Header -->
+								<header id="header">
+									<a href="index.html" class="logo"><strong>Mi comercio</strong> electronico</a>
+								</header>
+							<!-- end Header -->
+
+							<!-- center content -->
+								{% block centerContent %}
+								{% endblock centerContent %}
+							<!-- end center content -->
+							<!-- Section -->
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Search -->
+								<section id="search" class="alt">
+									<form method="post" action="#">
+										<input type="text" name="query" id="query" placeholder="Buscar" />
+									</form>
+								</section>
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li><a href="index.html">Inicio</a></li>
+										<li><a href="generic.html">Productos</a></li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								{% if user.is_authenticated %}
+									<b><p>Usuario actual: {{ user.email }}</p></b>
+									<a href="#" class="button primary large">Salir</a>
+								{% else %}
+									<section>
+										<header class="major"><h2>Ingresar</h2></header>
+										<p>Debe identificarse para realizar el proceso de compra</p>
+										<div>
+											<input type="email" name="email" id="email" value="" placeholder="Direccion de correo">
+										</div>
+										<div>
+											<input type="password" name="email" id="email" value="">
+										</div>
+										<div>
+											<a href="#" class="button primary large">Ingresar</a>
+										</div>
+									</section>
+								{% endif %}
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contactenos</h2>
+									</header>
+									<p>Distribuimos tutoriales en diversas areas de desarrollo de software</p>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">info@micomercio.co</a></li>
+										<li class="icon solid fa-phone">(000) 000-0000</li>
+										<li class="icon solid fa-home">Calle 1 # 2 - 3<br />
+										Barranquilla / Atlantico, TN 00000-0000</li>
+									</ul>
+								</section>
+
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<script src="{% static 'assets/js/main.js' %}"></script>
+			{%block imports_js %}{% endblock imports_js %}
+
+	 <div id='loading' style="display: none;">
+	          <div class="pop-fondo"></div><img class="pop-imagen" src='{% static "images/iconoCargando.gif" %}')>
+	  </div>
+
+	</body>
+</html>

@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from rest_framework import routers
+from django.conf import settings
+from django.urls import re_path
+from django.views.static import serve
 
 # APIS
 admin.autodiscover()
@@ -26,11 +29,16 @@ from operation.views import OperationDataViewSet, DetailOperationDataViewSet
 router.register(r'operation', OperationDataViewSet)
 router.register(r'detailoperation', DetailOperationDataViewSet)
 
+from product.views import ProductDataViewSet
+router.register(r'product', ProductDataViewSet)
+
 urlpatterns = [
 	path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
 	path('api/', include(router.urls)),
+    path('usuario/',include('usuario.urls')),
 ]
+
 admin.site.site_header = 'Mi sitio de comercio'
 admin.site.index_title = 'Administración del sitio'
 admin.site.site_title = 'Administración del sitio'

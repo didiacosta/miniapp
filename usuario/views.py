@@ -1,6 +1,7 @@
+from django.shortcuts import render_to_response, render
+from django.template import RequestContext
 # App
-from SURVEY.structure import Estructura
-from SURVEY.functions import funciones
+from miniapp.structure import Structure
 
 # Django
 from django.contrib.auth.models import Group
@@ -13,11 +14,11 @@ from rest_framework import status, permissions, viewsets#routers, serializers
 from rest_framework.response import Response
 
 # Oauth2_provider
-from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, OAuth2Authentication#TokenHasScope
+#from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, OAuth2Authentication#TokenHasScope
 
 
 # Serializers
-from .serializers import UsuarioSerializer, GrupoSerializer
+from .serializers import UserSerializer
 # Models
 from .models import User
 
@@ -27,7 +28,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 	# authentication_classes = [OAuth2Authentication]
 	# permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
 	queryset = User.objects.all()
-	serializer_class = UsuarioSerializer
+	serializer_class = UserSerializer
 	paginate_by = 50
 	nombre_modulo = 'Usuario'
 
@@ -129,127 +130,5 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 				respuesta=Estructura.error500()				
 				return Response(respuesta, status=status.HTTP_400_BAD_REQUEST)
 
-class GrupoViewSet(viewsets.ModelViewSet):
-	model = Group
-	# authentication_classes = [OAuth2Authentication]
-	# permission_classes = [permissions.IsAuthenticated, TokenHasScope]	
-	required_scopes = ['groups']
-	queryset = Group.objects.all()
-	serializer_class = GrupoSerializer
-	paginate_by = 50
-	nombre_modulo = 'Grupo'
-
-	def retrieve(self,request,*args, **kwargs):
-		try:
-			instance = self.get_object()
-			serializer = self.get_serializer(instance)
-			respuesta=Estructura.success('', serializer.data)
-			return Response(respuesta)
-		except Exception as e:
-			funciones.toLog(e,self.nombre_modulo)
-			respuesta=Estructura.error('No se encontraron registros')
-			return Response(respuesta, status=status.HTTP_404_NOT_FOUND)
-			
-	def list(self, request, *args, **kwargs):
-		try:
-			queryset = super(GrupoViewSet, self).get_queryset()
-			page = self.request.query_params.get('page', None)
-			dato = self.request.query_params.get('dato', None)		
-
-			qset = (~Q(id=0))
-
-			if dato:
-				qset = (Q(name__icontains=dato))	
-
-			queryset = self.model.objects.filter(qset)
-			mensaje = 'No se encontraron registros con los' + \
-					' criterios de busqueda ingresados.' if queryset.count()==0 else ''
-
-			if page:
-				paginacion = self.paginate_queryset(queryset)
-
-				if paginacion is not None:
-					serializer = self.get_serializer(paginacion,many=True)		
-					return self.get_paginated_response(Estructura.success(mensaje ,serializer.data))
-
-			serializer = self.get_serializer(queryset,many=True)
-			return Response(Estructura.success(mensaje ,serializer.data))
-
-		except Exception as e:
-			funciones.toLog(e,self.nombre_modulo)
-			respuesta=Estructura.error500()
-			return Response(respuesta, status=status.HTTP_400_BAD_REQUEST)
-
-	def create(self, request, *args, **kwargs):
-		if request.method == 'POST':			
-			try:
-				serializer = self.serializer_class(data=request.data,context={'request': request})
-				
-				if serializer.is_valid():
-					serializer.save()
-					respuesta=Estructura.success('El grupo ha sido guardado exitosamente.',serializer.data)
-					return Response(respuesta,status=status.HTTP_201_CREATED)
-				else:					
-					respuesta=Estructura.error(serializer.errors)
-					return Response(respuesta, status=status.HTTP_400_BAD_REQUEST)
-			except Exception as e:
-				funciones.toLog(e,self.nombre_modulo)
-				respuesta=Estructura.error500()				
-				return Response(respuesta, status=status.HTTP_400_BAD_REQUEST)
-
-	def update(self,request,*args,**kwargs):
-		if request.method == 'PUT':			
-			try:
-				partial = kwargs.pop('partial', False)
-				instance = self.get_object()
-				serializer = self.serializer_class(instance, data=request.data, context={'request': request}, partial=partial)
-				if serializer.is_valid():
-					serializer.save()				
-					respuesta=Estructura.success('El grupo ha sido actualizado exitosamente.',serializer.data)
-					return Response(respuesta,status=status.HTTP_201_CREATED)
-				else:
-					respuesta=Estructura.error(serializer.errors)
-					return Response(respuesta, status=status.HTTP_400_BAD_REQUEST)
-			except Exception as e:
-				funciones.toLog(e,self.nombre_modulo)
-				respuesta=Estructura.error500()				
-				return Response(respuesta, status=status.HTTP_400_BAD_REQUEST)
-							
-	def destroy(self,request,*args,**kwargs):
-		if request.method == 'DELETE':			
-			try:
-				instance = self.get_object()
-				serializer = self.get_serializer(instance)
-				self.perform_destroy(instance)	
-				respuesta=Estructura.success('El grupo ha sido eliminado exitosamente.',serializer.data)
-				return Response(respuesta, status=status.HTTP_204_NO_CONTENT)
-			except Exception as e:
-				funciones.toLog(e,self.nombre_modulo)
-				respuesta=Estructura.error500()				
-				return Response(respuesta, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['PUT'])
-@authentication_classes((OAuth2Authentication,))
-@permission_classes((permissions.IsAuthenticated, TokenHasReadWriteScope))
-def cambiarClave(request, id):
-	if request.method == 'PUT':
-		try:
-
-			user = authenticate(username=request.data['usuario'], password=request.data['clave_actual'])
-			mensaje = ''
-			if user:				
-				user=User.objects.get(pk=request.user.id)
-				user.set_password(request.data['nueva_clave'])
-				user.save()
-				mensaje='Su nueva clave de acceso al sistema ha sido establecida correctamente.'
-			
-			else:
-				mensaje='La contraseña es incorrecta!'
-
-			respuesta=Estructura.success(mensaje, None)
-			return Response(respuesta, status=status.HTTP_201_CREATED)			
-		except Exception as e:
-			funciones.toLog(e, 'usuario.cambiarClave')
-			respuesta=Estructura.error500()				
-			return Response(respuesta, status=status.HTTP_400_BAD_REQUEST)
+def index_view(request):
+	return render(request,'usuario/index.html',{})	

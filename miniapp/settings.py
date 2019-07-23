@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 
 # Application definition
 
@@ -59,10 +60,17 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'miniapp.urls'
 
+FILE_UPLOAD_HANDLERS = [
+"django.core.files.uploadhandler.MemoryFileUploadHandler",
+"django.core.files.uploadhandler.TemporaryFileUploadHandler",
+]
+
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,6 +78,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -137,7 +146,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+#STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 #Configuracion de almacenamiento externo
 cloudinary.config( 
@@ -146,6 +159,7 @@ cloudinary.config(
   api_secret = "qGQrPwT0geURjbSe9wKMw2kKNZU" 
 )
 URLCLOUDINARY='res.cloudinary.com/dvlh6khwu/'
+
 
 REST_FRAMEWORK = {
 

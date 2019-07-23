@@ -1,0 +1,45 @@
+{% extends 'page.html' %}
+{% load staticfiles %}
+{% load cloudinary %}
+{% block title %}Inicio{% endblock title%}
+
+{% block centerContent %}
+	<h2>Bienvenido a tu sitio de compras online..!!!</h2>
+	<div data-bind="visible:(list()!=null && list().length > 0)">
+		{% if user.is_authenticated %}
+			<a href="#" class="button primary large" data-bind="click:createPaymentRequest.bind()">Comprar</a>
+			<p id="message" name="message" style="display:None;background-color: orange;color: white;margin: 20px;padding: 20px;border-radius: 5px;border: 1px solid #f56a6a;"> Debe indicarnos el producto y la cantidad a comprar</p>
+			<p id="message-error" name="message-error" style="display:None;background-color: red;color: white;margin: 20px;padding: 20px;border-radius: 5px;border: 1px solid #f56a6a;"> se presentaron errores al procesar la solicitud</p>
+		{% else %}
+			<p>Debe identificarse con usuario y clave para inicar el proceso de compra</p>
+		{% endif%}
+		<div>
+			<div data-bind="foreach:{data:list, as:'item'}">
+				<div style="float:left;margin: 20px;padding: 20px;border-radius: 5px;border: 1px solid #f56a6a;">
+					<img data-bind='attr:{src:item.image_url_absolute}' style="align-items: center" height="150" width="150" >
+					<b><p data-bind="text:item.name" style="text-align: center"></p></b>
+					<p data-bind="text:item.price" style="text-align: center"></p>
+					{% if user.is_authenticated %}
+						<div>
+							<input class="order" type="number" data-bind='attr:{id:item.id,name:item.id}' 
+							max="999" min="1" length="4" value="0">
+						</div>
+					{% endif%}
+
+				</div>		
+			</div>
+		</div>
+	</div>
+	<div data-bind="visible:(list()==null || list().length == 0)">
+		<p>No se encontraron productos para ofrecer</p>
+	</div>
+{% endblock centerContent %}
+
+{%block imports_js %}
+<script src="{% static 'js/ViewModels/product/product.js' %}"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		product.getData(1);
+	});
+</script>
+{% endblock imports_js %}

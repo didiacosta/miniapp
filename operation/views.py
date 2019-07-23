@@ -109,9 +109,10 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 				return Response(reply, status=status.HTTP_400_BAD_REQUEST)
 
 	@transaction.atomic
-	@action(methods=['POST'],detail=False, url_path='create-payment-request',\
+	@action(methods=['post'],detail=False, url_path='create-payment-request',\
 	url_name='operation.create-payment-request')
 	def createPaymentRequest(self, request,*args,**kwargs):
+
 		try:
 			sid = transaction.savepoint()
 			# Se espera recibir por POST un array de json que contenga
@@ -122,7 +123,6 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 			if data:
 				arrayProducts = []
 				purchase_items = []
-				array = data.split('},')
 				idtoken = uuid.uuid1()
 				operation = Operation(
 					date_operation = datetime.datetime.now(),
@@ -131,12 +131,7 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 					user_ip_address = request.environ['REMOTE_ADDR'])
 				operation.save()
 
-				for element in array:
-					stringElement = element.replace('[','').replace(']','')
-					stringElement = stringElement + '}' if stringElement[-1] != '}' else stringElement
-					arrayProducts.append(json.loads(stringElement))
-
-				
+				arrayProducts =json.loads(data)['data']
 
 				for product in arrayProducts:
 					detailOperation = DetailOperation(
@@ -195,13 +190,17 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 			return response
 
 		except Exception as e:
+			exc_type, exc_obj, exc_tb = sys.exc_info()
+			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+			print(e,exc_type, fname, exc_tb.tb_lineno)
+			
 			transaction.savepoint_rollback(sid)
 			reply = Structure.error500()				
 			return Response(reply, status=status.HTTP_400_BAD_REQUEST)	
 
-	@action(methods=['GET'],detail=False, url_path='get-status-payment-request',\
+	@action(methods=['get'],detail=False, url_path='get-status-payment-request',\
 	url_name='operation.get-status-payment-request')
-	def createPaymentRequest(self, request,*args,**kwargs):
+	def getPaymentRequest(self, request,*args,**kwargs):
 		try:
 			token = request.GET.get('token',None)
 			if token:
@@ -214,9 +213,8 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 					}
 				result = requests.get('https://stag.wallet.tpaga.co/merchants/api/v1/payment_requests/' + \
 					token + '/info',headers = headers)
-
 				reply = Structure.success('Resultado satistactorio',
-					result.json())
+				result.json())
 			else:
 				reply = Structure.warning('No se encontro en la peticion el parametro token',None)				
 
@@ -224,10 +222,6 @@ class OperationDataViewSet(viewsets.ModelViewSet):
 			return response
 
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(e, exc_type, fname, exc_tb.tb_lineno)
-
 			reply = Structure.error500()				
 			return Response(reply, status=status.HTTP_400_BAD_REQUEST)				
 
