@@ -190,3 +190,48 @@ Prueba técnica de Backend
      idempotency_token, token, status, user
   </li>
 </ul>
+
+<h3>Instrucciones de instalacion</h3>
+<ul>
+  <li>
+    instalar Python con las librerias auxiliares: pip3, easy_install, entre otras.
+  </li>
+  <li>
+    instalar virtualenv con el comando: easy_install virtualenv
+  </li>
+  <li>
+    crear el ambiente virtual usando python 3.5.2 o superior: comando virtualenv -p [ruta al python.exe] [nombre del entorni virtual]
+  </li>
+  <li>
+    activar el entorno virtual: ingrese a la carpeta del entorno virtual creado y utilice el comando: activate
+  </li>
+  <li>
+    descargue el repositorio de github en la carpeta Scripts del entorno virtual creado
+  </li>
+  <li>
+    instalar postgree y pgadmin si no lo tiene instalado.
+  </li>
+  <li>
+    entrar al admin de postgree, usando pgadmin, y crear la base de datos vacia con el nombre miniappcomercio
+  </li>
+  <li>crear migraciones de los modelos a la base de datos creada usando el comando: python35 manage.py makemigrations</li>
+  <li>migrar los modelos hacia la base de datos usando el comando: python35 manage.py migrate</li>
+  <li>entrar al archivo settings.py ubicado en la ruta [ruta entorno virtual]\Scripts\miniapp\miniapp y buscar la constante IP_SERVER asignandole lo siguiente: https://[direccion ip del server]:8000/ luego guarde el cambio del archivo</li>
+  <li>ejecutar el proyecto con el comando Python35 manage.py runserver</li>
+  <li>entrar al admin de django y en el grupo products crear los productos que se venderan en el sitio del comercio</li>
+</ul>
+
+<h3>Observaciones</h3>
+<p align="justify">
+  el link a la documentacion de Miniapps esta errado en el documento
+de la prueba, el link es https://payment-links.docs.tpaga.co/
+</p>
+<p align="justify">
+  se sugiere utilizar repositorios privados, debido a que se 
+debe escribir en el codigo el usuario y la contraseña para acceder
+a la API de Tpaga, dejarlos en repositorios publicos expone las
+credenciales de autenticacion. Si se realizan repositorios privados, 
+es necesario especificar los usuarios con los cuales se debe compartirlo.
+ </p>
+ 
+
