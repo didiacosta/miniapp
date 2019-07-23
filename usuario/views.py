@@ -1,4 +1,5 @@
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
+from django.urls import reverse
 from django.template import RequestContext
 # App
 from miniapp.structure import Structure
@@ -6,7 +7,7 @@ from miniapp.structure import Structure
 # Django
 from django.contrib.auth.models import Group
 from django.db.models import Q
-from django.contrib.auth import authenticate#, login, logout
+from django.contrib.auth import authenticate, login, logout
 
 # Rest_framework
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -132,3 +133,28 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 
 def index_view(request):
 	return render(request,'usuario/index.html',{})	
+
+def logout_view(request):
+	logout(request)
+	return redirect(reverse('usuario.index'))
+
+def login_view(request):
+	if request.user.is_authenticated:
+		return redirect(reverse('usuario.index'))
+
+	message = ''	
+	if request.method == 'POST':
+		email = request.POST.get('email')
+		password = request.POST.get('password')
+		user = authenticate(email = email, password = password)
+
+		if user:
+			if user.is_active:
+				login(request, user)
+				return redirect(reverse('usuario.index'))
+			else:
+				message = 'Cuenta inactiva'
+		else:
+			message = 'Nombre de usuario o clave no valido.'
+	
+	return render(request, 'usuario/index.html', {'message': message})

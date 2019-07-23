@@ -69,20 +69,28 @@
 							<!-- Section -->
 								{% if user.is_authenticated %}
 									<b><p>Usuario actual: {{ user.email }}</p></b>
-									<a href="#" class="button primary large">Salir</a>
+									<a href="{% url 'usuario.logout' %}" class="button primary large">Salir</a>
 								{% else %}
 									<section>
 										<header class="major"><h2>Ingresar</h2></header>
 										<p>Debe identificarse para realizar el proceso de compra</p>
-										<div>
-											<input type="email" name="email" id="email" value="" placeholder="Direccion de correo">
-										</div>
-										<div>
-											<input type="password" name="email" id="email" value="">
-										</div>
-										<div>
-											<a href="#" class="button primary large">Ingresar</a>
-										</div>
+										
+										<form action="{% url 'usuario.login' %}" id="login-form" class="form-horizontal" style="margin-bottom: 0px !important;" method="post">
+											{% csrf_token %}
+											<div>
+												<input type="email" name="email" id="email" value="" placeholder="Direccion de correo">
+											</div>
+											<div>
+												<input type="password" name="password" id="password" value="">
+											</div>
+											{% if message %}
+												<p id="message" name="message" style="background-color: orange;color: white;margin: 20px;padding: 20px;border-radius: 5px;border: 1px solid #f56a6a;"> {{ message }}</p>
+											{% endif %}
+											<div>
+												<!-- <a href="#" class="button primary large">Ingresar</a> -->
+												<button type="submit">Ingresar</button>
+											</div>
+										</form>
 									</section>
 								{% endif %}
 							<!-- Section -->

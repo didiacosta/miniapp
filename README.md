@@ -111,7 +111,7 @@ Prueba técnica de Backend
   <tr>
     <td>13</td>
     <td>Si</td>
-    <td>Desarrollar frontend para listar consumir el servicio restfull de lista de operaciones y el estado de cada una.</td>
+    <td>Desarrollar frontend para listar consumir el servicio restfull de lista de operaciones y el estado de cada una.<b>El admin de Django provee una opcion para mostrar la lista de operaciones y el estado de cada una, el cual se actualiza al consultar el API de Tpaga con el estado que retorna este recurso.</b></td>
     <td>2</td>
     <td>NA</td>
     <td>Por ejecutar</td>
@@ -130,28 +130,28 @@ Prueba técnica de Backend
     <td>Despliegue de la miniapp (AWS).</td>
     <td>1</td>
     <td>1</td>
-    <td>Por ejecutar</td>
+    <td>Completado</td>
   </tr>
     <tr>
     <td>17</td>
     <td>No</td>
     <td>Instrucciones para pruebas.</td>
     <td>1</td>
-    <td>NA</td>
-    <td>Ejecutado</td>
+    <td>1</td>
+    <td>Completado</td>
   </tr>
    <tr>
     <td>18</td>
     <td>No</td>
     <td>Recomendaciones.</td>
     <td>1</td>
-    <td>NA</td>
-    <td>Ejecutado</td>
+    <td>1</td>
+    <td>Completado</td>
   </tr>
   <tr>
     <td colspan="3">Total</td>
     <td> 23 </td>
-    <td> NA </td>
+    <td> 20 </td>
     <td> En ejecución </td>
   </tr>
 </table>
@@ -222,6 +222,11 @@ Prueba técnica de Backend
 </ul>
 
 <h3>Observaciones</h3>
+<p align="justify">
+  la app de TPaga se detiene al utilizar el link q retorna el API de Tpaga en la propiedad tpaga_payment_url.
+  pregunté en slack pero no hubo respuesta acerca de como solucionar el tema.
+</p>
+
 <p align="justify">
   el link a la documentacion de Miniapps esta errado en el documento
 de la prueba, el link es https://payment-links.docs.tpaga.co/
