@@ -197,10 +197,10 @@ Prueba técnica de Backend
     instalar Python con las librerias auxiliares: pip3, easy_install, entre otras.
   </li>
   <li>
-    instalar virtualenv con el comando: easy_install virtualenv
+    instalar virtualenv con el comando: easy_install virtualenv (alternativamente puede utilizar pip en lugar de easy_install)
   </li>
   <li>
-    crear el ambiente virtual usando python 3.5.2 o superior: comando virtualenv -p [ruta al python.exe] [nombre del entorni virtual]
+    crear el ambiente virtual usando python 3.5.2 o superior a traves del comando: virtualenv [nombre del entorni virtual]
   </li>
   <li>
     activar el entorno virtual: ingrese a la carpeta del entorno virtual creado y utilice el comando: activate
