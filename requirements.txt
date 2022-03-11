@@ -7,7 +7,7 @@ django-simple-history==2.3.0
 djangorestframework==3.8.2
 idna==2.8
 mock==3.0.5
-Pillow==6.1.0
+Pillow==9.0.1
 psycopg2==2.8.3
 pytz==2019.1
 requests==2.22.0
